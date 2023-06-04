@@ -1,0 +1,227 @@
+swagger: '2.0'
+info:
+  title: Student Information Management Portal API docs
+  description : This is Student information Management project API docs.
+  version: 1.0
+  licence :
+    name: Apache 2.0
+    url: 'http://apache.org/'
+
+  servers:
+    -url: 'http://loaclhost:3000/'
+    description: This is my local server.
+
+schemes: ['http','https']
+
+
+paths:
+
+  /student:
+    get:
+      summary : To get all students
+      description: This API returns the list of all students in the student system.
+      tags: 
+        - student
+      responses: 
+        200:
+          description: Success!
+          schema :
+            $ref : '#/components/schemas/StudentInfoResponse'   
+        400:
+          description: Bad request.
+          schema :
+            $ref: '#/components/schemas/Failure'
+        500:
+          description: Internal server error
+          schema :
+            $ref: '#/components/schemas/Failure'
+
+    post:
+      summary: API to create student in system
+      description: This API is used to create a student in student system using provided data.
+      tags: 
+        - student
+      produces: 
+        - application/json
+      consumes: 
+        - application/json
+      parameters:
+      - in: body
+        name: student
+        schema:
+          $ref: '#/components/schemas/Student'
+      responses: 
+        201:
+          description: Success!
+          schema :
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: student added successfully.
+        422:
+          description: Unprocessable Entity.
+          schema :
+            $ref: '#/components/schemas/unProcessableEntity'
+        500:
+          description: Internal server error
+          schema :
+            $ref: '#/components/schemas/Failure'
+      
+  /student/{id}:
+    get:
+      summary: Getting a particular student details
+      description : This api returns a student object representing his all info
+      tags: 
+        - student
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema :
+            type : string
+
+      responses: 
+        200:
+          description: Success!
+          schema :
+            $ref : '#/components/schemas/StudentInfoResponse'   
+        404:
+          description: Not Found
+          schema :
+            $ref: '#/components/schemas/Failure'
+        500:
+          description: Internal server error
+          schema :
+            $ref: '#/components/schemas/Failure'
+
+    patch:
+      summary: Updating a particular student details
+      description : This api updates a student object representing his all info
+      tags: 
+        - student
+      produces: 
+        - application/json
+      consumes: 
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema :
+            type : string
+        - in: body
+          name: user
+          schema:
+            $ref: '#/components/schemas/Student'
+      responses: 
+        200:
+          description: Success!
+          schema :
+            $ref : '#/components/schemas/StudentInfoResponse'
+        404:
+          description: Not found.
+          schema :
+            $ref: '#/components/schemas/Failure'
+        422:
+          description: Unprocessable Entity.
+          schema :
+            $ref: '#/components/schemas/unProcessableEntity'
+        500:
+          description: Internal server error
+          schema :
+            $ref: '#/components/schemas/Failure'
+
+    delete:
+      summary: deleting a particular student details
+      description : This api deletes a student information from student system.
+      tags: 
+        - student
+      produces: 
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema :
+            type : string
+      responses: 
+        200:
+          description: Success!
+          schema :
+            $ref : '#/components/schemas/StudentInfoResponse'
+        404:
+          description: Not Found
+          schema :
+            $ref: '#/components/schemas/Failure'
+        500:
+          description: Internal server error
+          schema :
+            $ref: '#/components/schemas/Failure'
+
+components:
+  schemas:
+    StudentInfoResponse:
+      type: object
+      properties:
+        success:
+          type: boolean 
+          example: true
+        data:
+          type: object
+          properties:
+            studentId:
+              type: string
+              example: e7e48d27-55fb-4fd3-a93f-78bec2bc3934
+            name:
+              type: string
+              example: Mahesh
+            email:
+              type: string
+              example: mahesh@gmail.com
+            phoneNo:
+              type: string
+              example: "9765040404"
+            
+    Student:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Mahesh
+        email:
+          type: string
+          example: mahesh@gmail.com
+        phoneNo:
+          type: string
+          example: "9765040404"
+
+    Failure:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          exmaple: "Required resource not found!"
+
+    unProcessableEntity:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: object
+          properties:
+            schemaPath:
+              type: boolean
+              example : false
+            message:
+              type: string
+              exmaple: "Unable to proecess the given request!"
+
