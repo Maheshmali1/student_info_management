@@ -1,4 +1,4 @@
-import { validatorResult } from '../models/validatorResult';
+import { validatorResult } from '../models';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 const ajv = new Ajv();
