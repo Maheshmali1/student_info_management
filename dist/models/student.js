@@ -26,7 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.studentUpdateValidationSchema = exports.studentValidationSchema = exports.Student = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const studentSchema = new mongoose_1.Schema({
-    studentId: String,
+    studentId: Number,
     name: String,
     email: String,
     phoneNo: String
@@ -37,7 +37,7 @@ exports.studentValidationSchema = {
     'type': 'object',
     'properties': {
         'studentId': {
-            'type': 'string'
+            'type': 'number'
         },
         'name': {
             'type': 'string'
@@ -61,7 +61,7 @@ exports.studentUpdateValidationSchema = {
     'type': 'object',
     'properties': {
         'studentId': {
-            'type': 'string'
+            'type': 'number'
         },
         'name': {
             'type': 'string'

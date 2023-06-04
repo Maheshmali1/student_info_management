@@ -18,7 +18,7 @@ export const add = async function(studentData:any):Promise<DBresult>{
 }
 
 // Finding the student with given studentId.
-export const findById = async (id:string):Promise<DBresult>=>{
+export const findById = async (id:number):Promise<DBresult>=>{
     try {
         const foundStudent = await Student.findOne({ studentId: id });
         if(foundStudent===null){
@@ -57,7 +57,7 @@ export const getAll = async():Promise<DBresult>=>{
 }
 
 // Updating the particular student by studentId
-export const update = async(id:string,updateData:any):Promise<DBresult>=>{
+export const update = async(id:number,updateData:any):Promise<DBresult>=>{
 
     try{
         const updatedData = await Student.findOneAndUpdate(
@@ -86,7 +86,7 @@ export const update = async(id:string,updateData:any):Promise<DBresult>=>{
 }
 
 // deleting the particular student given by studentId.
-export const remove = async(id:string):Promise<DBresult>=>{
+export const remove = async(id:number):Promise<DBresult>=>{
     try{
         const result = await Student.findOneAndDelete({ studentId:id});
         

@@ -1,7 +1,7 @@
 import mongoose,{Schema} from "mongoose";
 
 export interface student{
-    studentId:string,
+    studentId:number,
     name:string;
     email:string
     phoneNo:string
@@ -10,7 +10,7 @@ export interface student{
 
 
 const studentSchema:Schema = new Schema({
-    studentId:String,
+    studentId:Number,
     name:String,
     email:String,
     phoneNo:String
@@ -25,7 +25,7 @@ export const studentValidationSchema = {
     'type':'object',
     'properties':{
         'studentId':{
-            'type': 'string'
+            'type': 'number'
         },
         'name':{
             'type':'string'
@@ -51,7 +51,7 @@ export const studentUpdateValidationSchema = {
     'type':'object',
     'properties':{
         'studentId':{
-            'type': 'string'
+            'type': 'number'
         },
         'name':{
             'type':'string'

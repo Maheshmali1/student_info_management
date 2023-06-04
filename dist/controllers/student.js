@@ -4,15 +4,16 @@ exports.deleteStudent = exports.updateStudent = exports.getAllStudent = exports.
 const services_1 = require("../services");
 const models_1 = require("../models");
 const utils_1 = require("../utils");
-const uuid_1 = require("uuid");
+let id = 111907001;
 // creating a student
 const createStudent = async (req, res, next) => {
     const { name, email, phoneNo } = req.body;
-    const uniqueId = (0, uuid_1.v4)();
     const validateResult = (0, utils_1.validator)(req.body, models_1.studentValidationSchema);
     if (!validateResult.match) {
-        return (0, utils_1.resSender)(res, 500, false, { schemaPath: validateResult.errors[0].schemaPath, message: validateResult.errors[0].message });
+        return (0, utils_1.resSender)(res, 422, false, { schemaPath: validateResult.errors[0].schemaPath, message: validateResult.errors[0].message });
     }
+    const uniqueId = id;
+    id++;
     const newStudnet = {
         studentId: uniqueId,
         name: name,
@@ -51,7 +52,7 @@ const updateStudent = async (req, res, next) => {
     // Schema validation for incoming request
     const validateResult = (0, utils_1.validator)(req.body, models_1.studentUpdateValidationSchema);
     if (!validateResult.match) {
-        return (0, utils_1.resSender)(res, 500, false, { schemaPath: validateResult.errors[0].schemaPath, message: validateResult.errors[0].message });
+        return (0, utils_1.resSender)(res, 422, false, { schemaPath: validateResult.errors[0].schemaPath, message: validateResult.errors[0].message });
     }
     const updateData = { ...req.body };
     const result = await (0, services_1.update)(studentId, updateData);
