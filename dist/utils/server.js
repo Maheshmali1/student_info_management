@@ -19,9 +19,9 @@ const createServer = () => {
     app.use(express_1.default.json());
     app.use('/user', routes_1.userRouter);
     app.use('/student', middleware_1.validateToken, routes_1.studentRouter);
-    // app.use((err:Error,req:Request,res:Response)=>{
-    // 	resSender(res,500,false,err.message);
-    // });
+    app.use((err, req, res, next) => {
+        return (0, _1.resSender)(res, next, 500, false, err.message);
+    });
     return app;
 };
 exports.createServer = createServer;

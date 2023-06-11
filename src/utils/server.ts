@@ -20,9 +20,9 @@ export const createServer= ()=>{
 	
 	app.use('/user',userRouter);
 	app.use('/student',validateToken,studentRouter);
-	// app.use((err:Error,req:Request,res:Response)=>{
-	// 	resSender(res,500,false,err.message);
-	// });
+	app.use((err:Error,req:Request,res:Response,next:NextFunction):any=>{
+		return resSender(res,next,500,false,err.message);
+	});
 	
 	return app;
 };

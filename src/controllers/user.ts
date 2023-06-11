@@ -15,10 +15,10 @@ export const registerUser: RequestHandler = async (req, res, next) => {
     const result = await saveUser({ username: username, password: hashedPassword });
 
     if (result.success) {
-        return resSender(res, result.statusCode, true, result.message);
+        return resSender(res,next, result.statusCode, true, result.message);
     }
 
-    return resSender(res, result.statusCode, false, result.message);
+    return resSender(res,next, result.statusCode, false, result.message);
 
 }
 
@@ -30,7 +30,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
     const result = await findByNameUser(username);
 
     if (!result.success) {
-        return resSender(res, result.statusCode, false, result.message);
+        return resSender(res,next, result.statusCode, false, result.message);
     }
 
     const dbPassword = result.message.data.password;
@@ -38,14 +38,21 @@ export const loginUser: RequestHandler = async (req, res, next) => {
         const accessTokenResult = await generateAccessToken({ user: username });
         const refreshTokenResult = await generateRefreshToken({ user: username });
 
-        if (!accessTokenResult.success || !refreshTokenResult.success) {
-            return resSender(res, result.statusCode, false, "Database error while generating tokens.");
+        
+        if (!accessTokenResult.success) {
+           
+            return resSender(res,next, accessTokenResult.statusCode, false, accessTokenResult.message);
         }
-
-        return resSender(res, result.statusCode, true, { accessToken: accessTokenResult.message.data, refreshToken: refreshTokenResult.message.data });
+    
+        if (!refreshTokenResult.success) {
+            return resSender(res,next,refreshTokenResult.statusCode, false, refreshTokenResult.message);
+        }
+    
+        
+        return resSender(res,next, result.statusCode, true, { accessToken: accessTokenResult.message.data, refreshToken: refreshTokenResult.message.data });
     }
     else {
-        return resSender(res, 401, false, "Password Incorrect!");
+        return resSender(res,next, 401, false, "Password Incorrect!");
     }
 
 }
@@ -58,26 +65,53 @@ export const refreshTokenGeneration: RequestHandler = async (req, res, next) => 
 
     const result = await findbyToken(token);
     if (!result.success) {
-        return resSender(res, result.statusCode, false, "Refresh token Invalid..");
+        return resSender(res,next, result.statusCode, false, "Refresh token Invalid..");
     }
 
     const accessTokenResult = await generateAccessToken({ user: username });
     const refreshTokenResult = await generateRefreshToken({ user: username });
 
-    if (!accessTokenResult.success || !refreshTokenResult.success) {
-        return resSender(res, result.statusCode, false, "Database error while generating tokens.");
+    if (!accessTokenResult.success) {
+        return resSender(res,next, accessTokenResult.statusCode, false, accessTokenResult.message);
     }
 
-    return resSender(res, result.statusCode, true, { accessToken: accessTokenResult.message.data, refreshToken: refreshTokenResult.message.data });
+    if (!refreshTokenResult.success) {
+        return resSender(res,next, refreshTokenResult.statusCode, false, refreshTokenResult.message);
+    }
+
+    return resSender(res,next, result.statusCode, true, { accessToken: accessTokenResult.message.data, refreshToken: refreshTokenResult.message.data });
 
 }
 
 export const logoutUser: RequestHandler = async(req, res, next) => {
-    const { token } = (req.body as { token: string });
+    const { accessToken,refreshToken } = (req.body as { accessToken: string,refreshToken:string });
 
-    const result = await removeToken(token);
-    if(!result.success){
-        return resSender(res,result.statusCode,false,result.message);
+    if(accessToken===undefined || refreshToken ===undefined){       
+        return resSender(res,next,400,false,"accessToken and refreshToken both should be present");
     }
-    return resSender(res, result.statusCode, true, "logged out user successfully.");
+
+    const refreshTokenCheck = await findbyToken(refreshToken);
+
+    
+    if(!refreshTokenCheck.success){
+        return resSender(res,next,400,false,"Invalid refreshToken provided");
+    }
+    
+    const accessTokenCheck = await findbyToken(accessToken);
+    if(!accessTokenCheck.success){  
+        return resSender(res,next,400,false,"Invalid accessToken provided");
+    }
+
+    const refreshTokenResult = await removeToken(refreshToken);
+    if(!refreshTokenResult.success){
+        return resSender(res,next,refreshTokenResult.statusCode,false,refreshTokenResult.message);
+    }
+
+    const accessTokenResult = await removeToken(accessToken);
+    if(!accessTokenResult.success){
+        
+        return resSender(res,next,accessTokenResult.statusCode,false,accessTokenResult.message);
+    }
+
+    return resSender(res,next,accessTokenResult.statusCode,true,"Logged out user successfully");
 }

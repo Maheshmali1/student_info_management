@@ -79,7 +79,7 @@ const updateStudent = async (id, updateData) => {
             };
         }
         return {
-            statusCode: 204,
+            statusCode: 200,
             success: true,
             message: { data: updatedData }
         };
@@ -105,7 +105,7 @@ const removeStudent = async (id) => {
             };
         }
         return {
-            statusCode: 204,
+            statusCode: 200,
             success: true,
             message: { data: result }
         };

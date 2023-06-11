@@ -80,7 +80,7 @@ export const updateStudent = async(id:number,updateData:any):Promise<DBresult>=>
             }
         }
         return{
-            statusCode:204,
+            statusCode:200,
             success:true,
             message:{data:updatedData}
         }
@@ -108,7 +108,7 @@ export const removeStudent = async(id:number):Promise<DBresult>=>{
             }
         }
         return {
-            statusCode:204,
+            statusCode:200,
             success:true,
             message:{data:result}
         }

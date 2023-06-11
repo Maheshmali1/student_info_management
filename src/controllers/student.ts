@@ -14,7 +14,7 @@ export const createStudent: RequestHandler = async (req, res, next) => {
     const validateResult: validatorResult = validator(req.body,studentValidationSchema);
 
 	if (!validateResult.match) {
-        return resSender(res,422,false,{ schemaPath: validateResult.errors![0].schemaPath, message: validateResult.errors![0].message } )
+        return resSender(res,next,422,false,{ schemaPath: validateResult.errors![0].schemaPath, message: validateResult.errors![0].message } )
 	}
 
     const uniqueId = id;
@@ -30,10 +30,10 @@ export const createStudent: RequestHandler = async (req, res, next) => {
     const result: DBresult = await saveStudent(newStudnet);
 
     if (result.success) {
-        return resSender(res, result.statusCode, true, result.message);
+        return resSender(res,next, result.statusCode, true, result.message);
     }
 
-    return resSender(res, result.statusCode, false, result.message);
+    return resSender(res,next, result.statusCode, false, result.message);
 
 
 }
@@ -45,9 +45,9 @@ export const getStudentbyId: RequestHandler<{ id: number }> = async (req, res, n
     const result:DBresult = await findByIdStudent(studentId);
 
     if (result.success) {
-        return resSender(res, result.statusCode, true, result.message);
+        return resSender(res,next, result.statusCode, true, result.message);
     }
-    return resSender(res, result.statusCode, false, result.message);
+    return resSender(res,next, result.statusCode, false, result.message);
 
 }
 
@@ -55,9 +55,9 @@ export const getStudentbyId: RequestHandler<{ id: number }> = async (req, res, n
 export const getAllStudent: RequestHandler = async(req, res, next) => {
     const result:DBresult =await findAllStudent();
     if(result.success){
-        return resSender(res,result.statusCode,true,result.message);
+        return resSender(res,next,result.statusCode,true,result.message);
     }
-    return resSender(res,result.statusCode,false,result.message);
+    return resSender(res,next,result.statusCode,false,result.message);
 }
 
 //updating a student
@@ -68,7 +68,7 @@ export const updateStudentInfo: RequestHandler<{id:number}> =async (req, res, ne
     const validateResult: validatorResult = validator(req.body,studentUpdateValidationSchema);
 
 	if (!validateResult.match) {
-        return resSender(res,422,false,{ schemaPath: validateResult.errors![0].schemaPath, message: validateResult.errors![0].message } )
+        return resSender(res,next,422,false,{ schemaPath: validateResult.errors![0].schemaPath, message: validateResult.errors![0].message } )
 	}
 
     const updateData = {...req.body};
@@ -77,9 +77,9 @@ export const updateStudentInfo: RequestHandler<{id:number}> =async (req, res, ne
     const result:DBresult = await updateStudent(studentId,updateData);
 
     if(result.success){
-        return resSender(res,result.statusCode,true,result.message);
+        return resSender(res,next,result.statusCode,true,result.message);
     }
-    return resSender(res, result.statusCode, false, result.message);
+    return resSender(res,next, result.statusCode, false, result.message);
     
 }
 
@@ -90,8 +90,8 @@ export const deleteStudent: RequestHandler<{id:number}> =async (req, res, next) 
     const result:DBresult = await removeStudent(studentId);
 
     if(result.success){
-        return resSender(res,result.statusCode,true,result.message);
+        return resSender(res,next,result.statusCode,true,result.message);
     }
-    return resSender(res, result.statusCode, false, result.message);
+    return resSender(res,next, result.statusCode, false, result.message);
 }
 

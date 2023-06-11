@@ -10,9 +10,9 @@ dotenv.config();
 const models_1 = require("../models");
 // generate access tokens
 const generateAccessToken = async (username) => {
-    const accessToken = jsonwebtoken_1.default.sign(username, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" });
+    const accessToken = await jsonwebtoken_1.default.sign(username, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRE });
     try {
-        const newToken = new models_1.Token(accessToken);
+        const newToken = new models_1.Token({ token: accessToken });
         await newToken.save();
         return {
             statusCode: 201,
@@ -31,9 +31,9 @@ const generateAccessToken = async (username) => {
 exports.generateAccessToken = generateAccessToken;
 // generate refreshTokens
 const generateRefreshToken = async (username) => {
-    const refreshToken = jsonwebtoken_1.default.sign(username, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "20m" });
+    const refreshToken = await jsonwebtoken_1.default.sign(username, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRE });
     try {
-        const newToken = new models_1.Token(refreshToken);
+        const newToken = new models_1.Token({ token: refreshToken });
         await newToken.save();
         return {
             statusCode: 201,
@@ -55,7 +55,6 @@ const findbyToken = async (token) => {
     try {
         const result = await models_1.Token.findOne({ token: token });
         if (result === undefined) {
-            console.log("hi I didn't found it.");
             return {
                 statusCode: 404,
                 success: false,
@@ -89,7 +88,7 @@ const removeToken = async (token) => {
             };
         }
         return {
-            statusCode: 204,
+            statusCode: 200,
             success: true,
             message: { data: result }
         };

@@ -8,10 +8,9 @@ import { DBresult,Token} from "../models";
 
 // generate access tokens
 export const generateAccessToken = async(username:any):Promise<DBresult>=>{
-    const accessToken = jwt.sign(username,process.env.ACCESS_TOKEN_SECRET!, {expiresIn: "1m"}) 
-    
+    const accessToken = await jwt.sign(username,process.env.ACCESS_TOKEN_SECRET!, {expiresIn: process.env.ACCESS_TOKEN_EXPIRE}) 
     try{
-        const newToken = new Token(accessToken);
+        const newToken = new Token({token:accessToken});
         await newToken.save();
         return {
             statusCode:201,
@@ -20,7 +19,7 @@ export const generateAccessToken = async(username:any):Promise<DBresult>=>{
         }
     }
     catch(error){
-        return{
+        return {
             statusCode:500,
             success:false,
             message:error
@@ -32,10 +31,10 @@ export const generateAccessToken = async(username:any):Promise<DBresult>=>{
 
 // generate refreshTokens
 export const generateRefreshToken = async(username:any):Promise<DBresult>=>{
-    const refreshToken = jwt.sign(username, process.env.REFRESH_TOKEN_SECRET!, {expiresIn: "20m"})
+    const refreshToken = await jwt.sign(username, process.env.REFRESH_TOKEN_SECRET!, {expiresIn: process.env.REFRESH_TOKEN_EXPIRE})
     
     try{
-        const newToken = new Token(refreshToken);
+        const newToken = new Token({token:refreshToken});
         await newToken.save();
         return {
             statusCode:201,
@@ -59,7 +58,6 @@ export const findbyToken = async(token:string):Promise<DBresult>=>{
     try{
         const result = await Token.findOne({token:token});
         if(result===undefined){
-            console.log("hi I didn't found it.");
             return{
                 statusCode:404,
                 success:false,
@@ -83,7 +81,6 @@ export const findbyToken = async(token:string):Promise<DBresult>=>{
 }
 
 // delete token 
-
 export const removeToken = async(token:string):Promise<DBresult>=>{
     try{
         const result = await Token.findOneAndDelete({ token:token});
@@ -96,7 +93,7 @@ export const removeToken = async(token:string):Promise<DBresult>=>{
             }
         }
         return {
-            statusCode:204,
+            statusCode:200,
             success:true,
             message:{data:result}
         }
