@@ -1,14 +1,17 @@
 import jwt from 'jsonwebtoken';
 const dotenv = require("dotenv");
 dotenv.config();
+import config from 'config'
 
 import { DBresult,Token} from "../models";
 
 
+const ACCESS_TOKEN_EXPIRE:string = config.get("ACCESS_TOKEN_EXPIRE");
+const REFRESH_TOKEN_EXPIRE:string = config.get("REFRESH_TOKEN_EXPIRE");
 
 // generate access tokens
 export const generateAccessToken = async(username:any):Promise<DBresult>=>{
-    const accessToken = await jwt.sign(username,process.env.ACCESS_TOKEN_SECRET!, {expiresIn: process.env.ACCESS_TOKEN_EXPIRE}) 
+    const accessToken = await jwt.sign(username,process.env.ACCESS_TOKEN_SECRET!, {expiresIn: ACCESS_TOKEN_EXPIRE}) 
     try{
         const newToken = new Token({token:accessToken});
         await newToken.save();
@@ -31,7 +34,7 @@ export const generateAccessToken = async(username:any):Promise<DBresult>=>{
 
 // generate refreshTokens
 export const generateRefreshToken = async(username:any):Promise<DBresult>=>{
-    const refreshToken = await jwt.sign(username, process.env.REFRESH_TOKEN_SECRET!, {expiresIn: process.env.REFRESH_TOKEN_EXPIRE})
+    const refreshToken = await jwt.sign(username, process.env.REFRESH_TOKEN_SECRET!, {expiresIn: REFRESH_TOKEN_EXPIRE})
     
     try{
         const newToken = new Token({token:refreshToken});

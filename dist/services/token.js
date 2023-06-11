@@ -7,10 +7,13 @@ exports.removeToken = exports.findbyToken = exports.generateRefreshToken = expor
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv = require("dotenv");
 dotenv.config();
+const config_1 = __importDefault(require("config"));
 const models_1 = require("../models");
+const ACCESS_TOKEN_EXPIRE = config_1.default.get("ACCESS_TOKEN_EXPIRE");
+const REFRESH_TOKEN_EXPIRE = config_1.default.get("REFRESH_TOKEN_EXPIRE");
 // generate access tokens
 const generateAccessToken = async (username) => {
-    const accessToken = await jsonwebtoken_1.default.sign(username, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRE });
+    const accessToken = await jsonwebtoken_1.default.sign(username, process.env.ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRE });
     try {
         const newToken = new models_1.Token({ token: accessToken });
         await newToken.save();
@@ -31,7 +34,7 @@ const generateAccessToken = async (username) => {
 exports.generateAccessToken = generateAccessToken;
 // generate refreshTokens
 const generateRefreshToken = async (username) => {
-    const refreshToken = await jsonwebtoken_1.default.sign(username, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRE });
+    const refreshToken = await jsonwebtoken_1.default.sign(username, process.env.REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRE });
     try {
         const newToken = new models_1.Token({ token: refreshToken });
         await newToken.save();
