@@ -15,6 +15,227 @@ schemes: ['http','https']
 
 
 paths:
+  /user/register:
+    post:
+      summary: API to create user in system
+      description: This API is used to create a user in Student system using provided data.
+      tags: 
+        - User APIs
+      produces: 
+        - application/json
+      consumes: 
+        - application/json
+      parameters:
+      - in: body
+        name: user
+        schema:
+          $ref: '#/components/schemas/User'
+      responses: 
+        201:
+          description: Success!
+          schema :
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: User added successfully.
+        500:
+          description: Internal server error
+          schema :
+            $ref: '#/components/schemas/Failure'      
+
+  
+  /user/login:
+    post:
+      summary: API to login user in system
+      description: This API is used to login a user in Student system using provided data.
+      tags: 
+        - User APIs
+      produces: 
+        - application/json
+      consumes: 
+        - application/json
+      parameters:
+      - in: body
+        name: user
+        schema:
+          $ref: '#/components/schemas/User'
+      responses: 
+        200:
+          description: Success!
+          schema :
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFoZXNoIiwiaWF0IjoxNjg1NTAzNzU4LCJleHAiOjE2ODU1MDQ2NTh9.2AaCiKsNjXVmsJeW04aoJrPXwtAH9j0_E34NwxBAlJo
+                  refreshToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFoZXNoIiwiaWF0IjoxNjg1NTAzNzU4LCJleHAiOjE2ODU1MDQ5NTh9.D1dDoEERNQrS1rTbG2R3x4yRepLfmuJND4CMqWVN2uM
+
+        401:
+          description: Invalid password.
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Password Incorrect!     
+        404:
+          description: User not found
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: could not find User with given username.      
+        500:
+          description: Internal server error
+          schema :
+            $ref: '#/components/schemas/Failure'     
+
+  /user/logout:
+    delete:
+      summary: deleting a particular user details
+      description : This api deletes a user information from Student system.
+      tags: 
+        - User APIs
+      produces: 
+        - application/json
+      parameters:
+        - name: token
+          in: body
+          required: true
+          schema :
+            type : object
+            properties:
+              accessToken:
+                type: string
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFoZXNoIiwiaWF0IjoxNjg1NTAzNzU4LCJleHAiOjE2ODU1MDQ5NTh9.D1dDoEERNQrS1rTbG2R3x4yRepLfmuJND4CMqWVN2uM
+              refreshToken:
+                type: string
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFoZXNoIiwiaWF0IjoxNjg1NTAzNzU4LCJleHAiOjE2ODU1MDQ5NTh9.D1dDoEERNQrS1rTbG2R3x4yRepLfmuJND4CMqWVN2uM
+      responses: 
+        200:
+          description: Success!
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: logged out user successfully.
+        400: 
+          description: Invalid inputs
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: accessToken and refreshToken both should be present
+        404:
+          description: Token not found
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: could not find token with given token value.
+        500:
+          description: Internal server error
+          schema :
+            $ref: '#/components/schemas/Failure'     
+
+  /user/refreshToken:
+    post:
+      summary: API to get refreshToken of user in system
+      description: This API is used to get refreshToken of user in Student system using provided data.
+      tags: 
+        - User APIs
+      produces: 
+        - application/json
+      consumes: 
+        - application/json
+      parameters:
+      - in: body
+        name: user
+        schema:
+          type: object
+          properties:
+            username: 
+              type: string
+              example: mahesh123
+            token:
+              type: string
+              example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFoZXNoIiwiaWF0IjoxNjg1NTAzNzU4LCJleHAiOjE2ODU1MDQ2NTh9.2AaCiKsNjXVmsJeW04aoJrPXwtAH9j0_E34NwxBAlJo
+      responses: 
+        201:
+          description: Success!
+          schema :
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFoZXNoIiwiaWF0IjoxNjg1NTAzNzU4LCJleHAiOjE2ODU1MDQ2NTh9.2AaCiKsNjXVmsJeW04aoJrPXwtAH9j0_E34NwxBAlJo
+                  refreshToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFoZXNoIiwiaWF0IjoxNjg1NTAzNzU4LCJleHAiOjE2ODU1MDQ5NTh9.D1dDoEERNQrS1rTbG2R3x4yRepLfmuJND4CMqWVN2uM
+
+        401:
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Refresh token Invalid.. 
+        404:
+          description: Token not found
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: could not find token with given token value.          
+        500:
+          description: Internal server error
+          schema :
+            $ref: '#/components/schemas/Failure'     
   /student:
     get:
       summary : To get all students
@@ -26,10 +247,6 @@ paths:
           description: Success!
           schema :
             $ref : '#/components/schemas/StudentInfoResponse'   
-        400:
-          description: Bad request.
-          schema :
-            $ref: '#/components/schemas/Failure'
         500:
           description: Internal server error
           schema :
@@ -89,9 +306,16 @@ paths:
           schema :
             $ref : '#/components/schemas/StudentInfoResponse'   
         404:
-          description: Not Found
-          schema :
-            $ref: '#/components/schemas/Failure'
+          description: Student Not found
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: could not find student with given studentId value.   
         500:
           description: Internal server error
           schema :
@@ -122,9 +346,16 @@ paths:
           schema :
             $ref : '#/components/schemas/StudentInfoResponse'
         404:
-          description: Not found.
-          schema :
-            $ref: '#/components/schemas/Failure'
+          description: Student Not found
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: could not find student with given studentId value. 
         422:
           description: Unprocessable Entity.
           schema :
@@ -153,9 +384,16 @@ paths:
           schema :
             $ref : '#/components/schemas/StudentInfoResponse'
         404:
-          description: Not Found
-          schema :
-            $ref: '#/components/schemas/Failure'
+          description: Student Not found
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: could not find student with given studentId value. 
         500:
           description: Internal server error
           schema :
@@ -215,7 +453,7 @@ components:
           example: false
         message:
           type: string
-          exmaple: "Required resource not found!"
+          exmaple: error string
 
     unProcessableEntity:
       type: object

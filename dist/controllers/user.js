@@ -57,7 +57,7 @@ const refreshTokenGeneration = async (req, res, next) => {
     if (!refreshTokenResult.success) {
         return (0, utils_1.resSender)(res, next, refreshTokenResult.statusCode, false, refreshTokenResult.message);
     }
-    return (0, utils_1.resSender)(res, next, result.statusCode, true, { accessToken: accessTokenResult.message.data, refreshToken: refreshTokenResult.message.data });
+    return (0, utils_1.resSender)(res, next, refreshTokenResult.statusCode, true, { accessToken: accessTokenResult.message.data, refreshToken: refreshTokenResult.message.data });
 };
 exports.refreshTokenGeneration = refreshTokenGeneration;
 const logoutUser = async (req, res, next) => {

@@ -62,7 +62,7 @@ describe('User authentication test suite',()=>{
 
    // getting new accessToken after previous has expired.
    describe('given that refreshToken is valid',()=>{
-    it('should return 200 with new accessToken and refreshToken',async()=>{
+    it('should return 201 with new accessToken and refreshToken',async()=>{
         const {statusCode,body} = await supertest(app).post('/user/refreshToken').send({
             "username": "mahesh123",
             "token": refreshToken
@@ -71,7 +71,7 @@ describe('User authentication test suite',()=>{
         newAccessToken = 'bearer '+body.message.accessToken;
         newRefreshToken = body.message.refreshToken;
 
-        expect(statusCode).toBe(200);
+        expect(statusCode).toBe(201);
   
     })
    })

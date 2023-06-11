@@ -79,7 +79,7 @@ export const refreshTokenGeneration: RequestHandler = async (req, res, next) => 
         return resSender(res,next, refreshTokenResult.statusCode, false, refreshTokenResult.message);
     }
 
-    return resSender(res,next, result.statusCode, true, { accessToken: accessTokenResult.message.data, refreshToken: refreshTokenResult.message.data });
+    return resSender(res,next, refreshTokenResult.statusCode, true, { accessToken: accessTokenResult.message.data, refreshToken: refreshTokenResult.message.data });
 
 }
 
