@@ -1,16 +1,18 @@
 import { Student, DBresult } from "../models";
 
 // Adding student to database.
-export const add = async function(studentData:any):Promise<DBresult>{
+export const saveStudent = async function(studentData:any):Promise<DBresult>{
     const newStudent = new Student(studentData);
     try {
         await newStudent.save();
         return {
+            statusCode:201,
             success: true,
             message: "student added successfully."
         };
     } catch (error) {
         return {
+            statusCode:500,
             success: false,
             message: error
         };
@@ -18,21 +20,24 @@ export const add = async function(studentData:any):Promise<DBresult>{
 }
 
 // Finding the student with given studentId.
-export const findById = async (id:number):Promise<DBresult>=>{
+export const findByIdStudent = async (id:number):Promise<DBresult>=>{
     try {
         const foundStudent = await Student.findOne({ studentId: id });
         if(foundStudent===null){
             return {
+                statusCode:404,
                 success:false,
                 message:"could not find studnet with given studentId."
             }
         }
         return {
+            statusCode:200,
             success: true,
             message: {data:foundStudent}
         };
     } catch (error) {
         return {
+            statusCode:500,
             success: false,
             message: error
         };
@@ -40,16 +45,18 @@ export const findById = async (id:number):Promise<DBresult>=>{
 }
 
 // Getting all present students in the system.
-export const getAll = async():Promise<DBresult>=>{
+export const findAllStudent = async():Promise<DBresult>=>{
     try{
         const foundStudents = await Student.find({});
         return{
+            statusCode:200,
             success:true,
             message:{data:foundStudents }
         }
     }
     catch(error){
         return{
+            statusCode:500,
             success:false,
             message:error
         }
@@ -57,7 +64,7 @@ export const getAll = async():Promise<DBresult>=>{
 }
 
 // Updating the particular student by studentId
-export const update = async(id:number,updateData:any):Promise<DBresult>=>{
+export const updateStudent = async(id:number,updateData:any):Promise<DBresult>=>{
 
     try{
         const updatedData = await Student.findOneAndUpdate(
@@ -67,17 +74,20 @@ export const update = async(id:number,updateData:any):Promise<DBresult>=>{
         );
         if(updatedData===null){
             return{
+                statusCode:404,
                 success:false,
                 message:"could not find student with given studentId."
             }
         }
         return{
+            statusCode:204,
             success:true,
             message:{data:updatedData}
         }
     }
     catch(error){
         return{
+            statusCode:500,
             success:false,
             message:error
         }
@@ -86,22 +96,25 @@ export const update = async(id:number,updateData:any):Promise<DBresult>=>{
 }
 
 // deleting the particular student given by studentId.
-export const remove = async(id:number):Promise<DBresult>=>{
+export const removeStudent = async(id:number):Promise<DBresult>=>{
     try{
         const result = await Student.findOneAndDelete({ studentId:id});
         
         if(result ===null){
             return{
+                statusCode:404,
                 success:false,
                 message:"could not find student with given studentId."
             }
         }
         return {
+            statusCode:204,
             success:true,
             message:{data:result}
         }
     }catch(error){
         return{
+            statusCode:500,
             success:false,
             message:error
         }

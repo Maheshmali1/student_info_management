@@ -15,7 +15,6 @@ schemes: ['http','https']
 
 
 paths:
-
   /student:
     get:
       summary : To get all students
@@ -198,6 +197,15 @@ components:
         phoneNo:
           type: string
           example: "9765040404"
+    User:
+      type: object
+      properties:
+        username: 
+          type: string
+          example: mahesh
+        password:
+          type: string
+          example: password123
 
     Failure:
       type: object

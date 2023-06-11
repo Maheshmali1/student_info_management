@@ -17,3 +17,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./student"), exports);
 __exportStar(require("./DBresult"), exports);
 __exportStar(require("./validatorResult"), exports);
+__exportStar(require("./user"), exports);
+__exportStar(require("./token"), exports);

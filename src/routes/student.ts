@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createStudent,getAllStudent,getStudentbyId,updateStudent,deleteStudent } from "../controllers";
+import { createStudent,getAllStudent,getStudentbyId,updateStudentInfo,deleteStudent } from "../controllers";
 
 const router = Router();
 
@@ -9,7 +9,7 @@ router.get('/:id',getStudentbyId);
 
 router.post('/',createStudent);
 
-router.patch('/:id',updateStudent);
+router.patch('/:id',updateStudentInfo);
 
 router.delete('/:id',deleteStudent);
 

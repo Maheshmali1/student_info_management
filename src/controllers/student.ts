@@ -1,8 +1,7 @@
 import { RequestHandler } from "express";
-import { add, findById, getAll, update, remove } from "../services";
-import { Student,studentValidationSchema, studentUpdateValidationSchema, DBresult, validatorResult, student } from "../models";
+import { saveStudent, findByIdStudent, findAllStudent, updateStudent, removeStudent } from "../services";
+import { studentValidationSchema, studentUpdateValidationSchema, DBresult, validatorResult, student } from "../models";
 import { resSender,validator } from "../utils";
-import { v4 as uuidv4 } from 'uuid';
 let id = 111907001;
 
 
@@ -28,13 +27,13 @@ export const createStudent: RequestHandler = async (req, res, next) => {
 
     }
 
-    const result: DBresult = await add(newStudnet);
+    const result: DBresult = await saveStudent(newStudnet);
 
     if (result.success) {
-        return resSender(res, 201, true, result.message);
+        return resSender(res, result.statusCode, true, result.message);
     }
 
-    return resSender(res, 500, false, result.message);
+    return resSender(res, result.statusCode, false, result.message);
 
 
 }
@@ -43,26 +42,26 @@ export const createStudent: RequestHandler = async (req, res, next) => {
 export const getStudentbyId: RequestHandler<{ id: number }> = async (req, res, next) => {
     const studentId = req.params.id as number;
 
-    const result:DBresult = await findById(studentId);
+    const result:DBresult = await findByIdStudent(studentId);
 
     if (result.success) {
-        return resSender(res, 200, true, result.message);
+        return resSender(res, result.statusCode, true, result.message);
     }
-    return resSender(res, 500, false, result.message);
+    return resSender(res, result.statusCode, false, result.message);
 
 }
 
 // Reading all student.
 export const getAllStudent: RequestHandler = async(req, res, next) => {
-    const result:DBresult =await getAll();
+    const result:DBresult =await findAllStudent();
     if(result.success){
-        return resSender(res,200,true,result.message);
+        return resSender(res,result.statusCode,true,result.message);
     }
-    return resSender(res,500,false,result.message);
+    return resSender(res,result.statusCode,false,result.message);
 }
 
 //updating a student
-export const updateStudent: RequestHandler<{id:number}> =async (req, res, next) => {
+export const updateStudentInfo: RequestHandler<{id:number}> =async (req, res, next) => {
     const studentId= req.params.id as number;
 
     // Schema validation for incoming request
@@ -75,12 +74,12 @@ export const updateStudent: RequestHandler<{id:number}> =async (req, res, next) 
     const updateData = {...req.body};
 
 
-    const result:DBresult = await update(studentId,updateData);
+    const result:DBresult = await updateStudent(studentId,updateData);
 
     if(result.success){
-        return resSender(res,200,true,result.message);
+        return resSender(res,result.statusCode,true,result.message);
     }
-    return resSender(res, 500, false, result.message);
+    return resSender(res, result.statusCode, false, result.message);
     
 }
 
@@ -88,11 +87,11 @@ export const updateStudent: RequestHandler<{id:number}> =async (req, res, next) 
 export const deleteStudent: RequestHandler<{id:number}> =async (req, res, next) => {
     const studentId= req.params.id as number;
     
-    const result:DBresult = await remove(studentId);
+    const result:DBresult = await removeStudent(studentId);
 
     if(result.success){
-        return resSender(res,200,true,result.message);
+        return resSender(res,result.statusCode,true,result.message);
     }
-    return resSender(res, 500, false, result.message);
+    return resSender(res, result.statusCode, false, result.message);
 }
 
