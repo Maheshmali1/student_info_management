@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 
-
+// Response sender function.
 export const resSender = (res:Response,next:NextFunction,statusCode:number,success:boolean, message:any)=>{
     if(message instanceof Error){
         // add logger here.

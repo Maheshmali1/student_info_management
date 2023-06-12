@@ -5,8 +5,6 @@ import { studentRouter,userRouter } from '../routes';
 import { DBconnection,resSender } from '.';
 import { validateToken } from '../middleware';
 
-
-
 const swaggerDocs = yaml.load('./api.yaml');
 
 // Function to creater server in express.

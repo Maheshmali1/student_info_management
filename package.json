@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest",
-    "compile": "tsc -w",
-    "dev": "cross-env NODE_ENV=development nodemon dist/app.js",
-    "prod": "cross-env NODE_ENV=production node dist/app.js"
+    "build": "tsc",
+    "dev": "npm run build && cross-env NODE_ENV=development nodemon dist/app.js",
+    "prod": "npm run build && cross-env NODE_ENV=production node dist/app.js"
   },
   "author": "Mahesh Mali",
   "license": "ISC",
@@ -37,6 +37,7 @@
     "@types/swagger-ui-express": "^4.1.3",
     "@types/uuid": "^9.0.1",
     "@types/yamljs": "^0.2.31",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
+    "tsconfig-paths": "^4.2.0"
   }
 }
