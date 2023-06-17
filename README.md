@@ -211,14 +211,14 @@ Click on the API Documentation link to see the live APIs and start using them.
 ![fourth_page](./assets/image-3.png)
 
 
-Thank you for choosing the EStudent Information Management APIs! If you have any questions or need further assistance, please don't hesitate to reach out.
+Thank you for choosing the Student Information Management APIs! If you have any questions or need further assistance, please don't hesitate to reach out.
 
 ---
 
 
 ## Author
 
-The Drone Management System is developed and maintained by [Mahesh Mali](https://github.com/Maheshmali1).
+The Student Information Management is developed and maintained by [Mahesh Mali](https://github.com/Maheshmali1).
 
 ---
 
