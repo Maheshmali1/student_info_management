@@ -1,7 +1,7 @@
-import { ErrorObject } from "ajv"
+import { type ErrorObject } from 'ajv'
 
 // Validator result type
-export type validatorResult={
-    match: boolean;
-    errors: ErrorObject<string, Record<string, any>, unknown>[] | null | undefined;
+export interface validatorResult {
+  match: boolean
+  errors: Array<ErrorObject<string, Record<string, any>, unknown>> | null | undefined
 }

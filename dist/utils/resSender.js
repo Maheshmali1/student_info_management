@@ -5,11 +5,12 @@ exports.resSender = void 0;
 const resSender = (res, next, statusCode, success, message) => {
     if (message instanceof Error) {
         // add logger here.
-        return next(message);
+        next(message);
+        return;
     }
     res.status(statusCode).json({
-        success: success,
-        message: message
+        success,
+        message
     });
 };
 exports.resSender = resSender;

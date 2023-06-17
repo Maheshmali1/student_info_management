@@ -1,14 +1,14 @@
-import { NextFunction, Response } from "express";
+import { type NextFunction, type Response } from 'express';
 
 // Response sender function.
-export const resSender = (res:Response,next:NextFunction,statusCode:number,success:boolean, message:any)=>{
-    if(message instanceof Error){
-        // add logger here.
-        return next!(message);
-    } 
+export const resSender = (res: Response, next: NextFunction, statusCode: number, success: boolean, message: any): any => {
+  if (message instanceof Error) {
+    // add logger here.
+    next(message); return;
+  }
 
-    res.status(statusCode).json({
-        success:success,
-        message:message
-    })
+  res.status(statusCode).json({
+    success,
+    message
+  })
 }

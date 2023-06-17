@@ -5,15 +5,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.removeToken = exports.findbyToken = exports.generateRefreshToken = exports.generateAccessToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const dotenv = require("dotenv");
-dotenv.config();
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const config_1 = __importDefault(require("config"));
 const models_1 = require("../models");
-const ACCESS_TOKEN_EXPIRE = config_1.default.get("ACCESS_TOKEN_EXPIRE");
-const REFRESH_TOKEN_EXPIRE = config_1.default.get("REFRESH_TOKEN_EXPIRE");
+const ACCESS_TOKEN_EXPIRE = config_1.default.get('ACCESS_TOKEN_EXPIRE');
+const REFRESH_TOKEN_EXPIRE = config_1.default.get('REFRESH_TOKEN_EXPIRE');
 // generate access tokens
 const generateAccessToken = async (username) => {
-    const accessToken = await jsonwebtoken_1.default.sign(username, process.env.ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRE });
+    const accessToken = jsonwebtoken_1.default.sign(username, process.env.ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRE });
     try {
         const newToken = new models_1.Token({ token: accessToken });
         await newToken.save();
@@ -34,7 +34,7 @@ const generateAccessToken = async (username) => {
 exports.generateAccessToken = generateAccessToken;
 // generate refreshTokens
 const generateRefreshToken = async (username) => {
-    const refreshToken = await jsonwebtoken_1.default.sign(username, process.env.REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRE });
+    const refreshToken = jsonwebtoken_1.default.sign(username, process.env.REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRE });
     try {
         const newToken = new models_1.Token({ token: refreshToken });
         await newToken.save();
@@ -53,15 +53,15 @@ const generateRefreshToken = async (username) => {
     }
 };
 exports.generateRefreshToken = generateRefreshToken;
-// Find token 
+// Find token
 const findbyToken = async (token) => {
     try {
-        const result = await models_1.Token.findOne({ token: token });
+        const result = await models_1.Token.findOne({ token });
         if (result === undefined) {
             return {
                 statusCode: 404,
                 success: false,
-                message: "Invalid token",
+                message: 'Invalid token'
             };
         }
         return {
@@ -79,15 +79,15 @@ const findbyToken = async (token) => {
     }
 };
 exports.findbyToken = findbyToken;
-// delete token 
+// delete token
 const removeToken = async (token) => {
     try {
-        const result = await models_1.Token.findOneAndDelete({ token: token });
+        const result = await models_1.Token.findOneAndDelete({ token });
         if (result === null) {
             return {
                 statusCode: 404,
                 success: false,
-                message: "could not find token with given token value."
+                message: 'could not find token with given token value.'
             };
         }
         return {

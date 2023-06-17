@@ -34,45 +34,45 @@ const studentSchema = new mongoose_1.Schema({
 exports.Student = mongoose_1.default.model('student', studentSchema);
 // schema for validation
 exports.studentValidationSchema = {
-    'type': 'object',
-    'properties': {
-        'studentId': {
-            'type': 'number'
+    type: 'object',
+    properties: {
+        studentId: {
+            type: 'number'
         },
-        'name': {
-            'type': 'string'
+        name: {
+            type: 'string'
         },
-        'email': {
-            'type': 'string',
-            'format': 'email'
+        email: {
+            type: 'string',
+            format: 'email'
         },
-        'phoneNo': {
-            'type': 'string',
-            'pattern': '^[0-9]{10}$'
+        phoneNo: {
+            type: 'string',
+            pattern: '^[0-9]{10}$'
         }
     },
-    'required': [
+    required: [
         'name',
         'email',
         'phoneNo'
     ]
 };
 exports.studentUpdateValidationSchema = {
-    'type': 'object',
-    'properties': {
-        'studentId': {
-            'type': 'number'
+    type: 'object',
+    properties: {
+        studentId: {
+            type: 'number'
         },
-        'name': {
-            'type': 'string'
+        name: {
+            type: 'string'
         },
-        'email': {
-            'type': 'string',
-            'format': 'email'
+        email: {
+            type: 'string',
+            format: 'email'
         },
-        'phoneNo': {
-            'type': 'string',
-            'pattern': '^[0-9]{10}$'
+        phoneNo: {
+            type: 'string',
+            pattern: '^[0-9]{10}$'
         }
     }
 };

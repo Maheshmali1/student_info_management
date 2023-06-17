@@ -1,97 +1,95 @@
-import { RequestHandler } from "express";
-import { saveStudent, findByIdStudent, findAllStudent, updateStudent, removeStudent } from "../services";
-import { studentValidationSchema, studentUpdateValidationSchema, DBresult, validatorResult, student } from "../models";
-import { resSender,validator } from "../utils";
+import { type Request, type Response, type NextFunction } from 'express';
+import { saveStudent, findByIdStudent, findAllStudent, updateStudent, removeStudent } from '../services';
+import { studentValidationSchema, studentUpdateValidationSchema, type DBresult, type validatorResult, type student } from '../models';
+import { resSender, validator } from '../utils';
 let id = 111907001;
 
-
 // creating a student
-export const createStudent: RequestHandler = async (req, res, next) => {
+export const createStudent = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const { name, email, phoneNo } = (req.body as { name: string, email: string, phoneNo: string });
 
-    const { name,email,phoneNo } = (req.body as {name:string,email:string,phoneNo:string});
-    
+  const validateResult: validatorResult = validator(req.body, studentValidationSchema);
 
-    const validateResult: validatorResult = validator(req.body,studentValidationSchema);
+  if (!validateResult.match) {
+    resSender(res, next, 422, false, { schemaPath: validateResult.errors?.[0].schemaPath, message: validateResult.errors?.[0].message });
+    return;
+  }
 
-	if (!validateResult.match) {
-        return resSender(res,next,422,false,{ schemaPath: validateResult.errors![0].schemaPath, message: validateResult.errors![0].message } )
-	}
+  const uniqueId = id;
+  id++;
+  const newStudnet: student = {
+    studentId: uniqueId,
+    name: name,
+    email: email,
+    phoneNo: phoneNo
 
-    const uniqueId = id;
-    id++;
-    const newStudnet:student = {
-        studentId:uniqueId,
-        name:name,
-        email:email,
-        phoneNo:phoneNo
+  }
 
-    }
+  const result: DBresult = await saveStudent(newStudnet);
 
-    const result: DBresult = await saveStudent(newStudnet);
+  if (result.success) {
+    resSender(res, next, result.statusCode, true, result.message);
+    return;
+  }
 
-    if (result.success) {
-        return resSender(res,next, result.statusCode, true, result.message);
-    }
-
-    return resSender(res,next, result.statusCode, false, result.message);
-
-
+  resSender(res, next, result.statusCode, false, result.message);
 }
 
 // Reading the student with given studentId
-export const getStudentbyId: RequestHandler<{ id: number }> = async (req, res, next) => {
-    const studentId = req.params.id as number;
+export const getStudentbyId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const studentId = parseInt(req.params.id);
 
-    const result:DBresult = await findByIdStudent(studentId);
+  const result: DBresult = await findByIdStudent(studentId);
 
-    if (result.success) {
-        return resSender(res,next, result.statusCode, true, result.message);
-    }
-    return resSender(res,next, result.statusCode, false, result.message);
-
+  if (result.success) {
+    resSender(res, next, result.statusCode, true, result.message);
+    return;
+  }
+  resSender(res, next, result.statusCode, false, result.message);
 }
 
 // Reading all student.
-export const getAllStudent: RequestHandler = async(req, res, next) => {
-    const result:DBresult =await findAllStudent();
-    if(result.success){
-        return resSender(res,next,result.statusCode,true,result.message);
-    }
-    return resSender(res,next,result.statusCode,false,result.message);
+export const getAllStudent = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const result: DBresult = await findAllStudent();
+  if (result.success) {
+    resSender(res, next, result.statusCode, true, result.message);
+    return;
+  }
+  resSender(res, next, result.statusCode, false, result.message);
 }
 
-//updating a student
-export const updateStudentInfo: RequestHandler<{id:number}> =async (req, res, next) => {
-    const studentId= req.params.id as number;
+// updating a student
+export const updateStudentInfo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const studentId = parseInt(req.params.id);
 
-    // Schema validation for incoming request
-    const validateResult: validatorResult = validator(req.body,studentUpdateValidationSchema);
+  // Schema validation for incoming request
+  const validateResult: validatorResult = validator(req.body, studentUpdateValidationSchema);
 
-	if (!validateResult.match) {
-        return resSender(res,next,422,false,{ schemaPath: validateResult.errors![0].schemaPath, message: validateResult.errors![0].message } )
-	}
+  if (!validateResult.match) {
+    resSender(res, next, 422, false, { schemaPath: validateResult.errors?.[0].schemaPath, message: validateResult.errors?.[0].message })
+    return;
+  }
 
-    const updateData = {...req.body};
+  const updateData = { ...req.body };
 
+  const result: DBresult = await updateStudent(studentId, updateData);
 
-    const result:DBresult = await updateStudent(studentId,updateData);
-
-    if(result.success){
-        return resSender(res,next,result.statusCode,true,result.message);
-    }
-    return resSender(res,next, result.statusCode, false, result.message);
-    
+  if (result.success) {
+    resSender(res, next, result.statusCode, true, result.message);
+    return;
+  }
+  resSender(res, next, result.statusCode, false, result.message);
 }
 
 // deleting a student
-export const deleteStudent: RequestHandler<{id:number}> =async (req, res, next) => {
-    const studentId= req.params.id as number;
-    
-    const result:DBresult = await removeStudent(studentId);
+export const deleteStudent = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const studentId = parseInt(req.params.id);
 
-    if(result.success){
-        return resSender(res,next,result.statusCode,true,result.message);
-    }
-    return resSender(res,next, result.statusCode, false, result.message);
+  const result: DBresult = await removeStudent(studentId);
+
+  if (result.success) {
+    resSender(res, next, result.statusCode, true, result.message);
+    return;
+  }
+  resSender(res, next, result.statusCode, false, result.message);
 }
-

@@ -10,7 +10,7 @@ const saveStudent = async function (studentData) {
         return {
             statusCode: 201,
             success: true,
-            message: "student added successfully."
+            message: 'student added successfully.'
         };
     }
     catch (error) {
@@ -30,7 +30,7 @@ const findByIdStudent = async (id) => {
             return {
                 statusCode: 404,
                 success: false,
-                message: "could not find studnet with given studentId."
+                message: 'could not find studnet with given studentId.'
             };
         }
         return {
@@ -75,7 +75,7 @@ const updateStudent = async (id, updateData) => {
             return {
                 statusCode: 404,
                 success: false,
-                message: "could not find student with given studentId."
+                message: 'could not find student with given studentId.'
             };
         }
         return {
@@ -101,7 +101,7 @@ const removeStudent = async (id) => {
             return {
                 statusCode: 404,
                 success: false,
-                message: "could not find student with given studentId."
+                message: 'could not find student with given studentId.'
             };
         }
         return {

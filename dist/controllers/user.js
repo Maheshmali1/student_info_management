@@ -13,9 +13,10 @@ const registerUser = async (req, res, next) => {
     const hashedPassword = await bcrypt_1.default.hash(password, 10);
     const result = await (0, services_1.saveUser)({ username: username, password: hashedPassword });
     if (result.success) {
-        return (0, utils_1.resSender)(res, next, result.statusCode, true, result.message);
+        (0, utils_1.resSender)(res, next, result.statusCode, true, result.message);
+        return;
     }
-    return (0, utils_1.resSender)(res, next, result.statusCode, false, result.message);
+    (0, utils_1.resSender)(res, next, result.statusCode, false, result.message);
 };
 exports.registerUser = registerUser;
 // API for user login.
@@ -23,22 +24,25 @@ const loginUser = async (req, res, next) => {
     const { username, password } = req.body;
     const result = await (0, services_1.findByNameUser)(username);
     if (!result.success) {
-        return (0, utils_1.resSender)(res, next, result.statusCode, false, result.message);
+        (0, utils_1.resSender)(res, next, result.statusCode, false, result.message);
+        return;
     }
     const dbPassword = result.message.data.password;
     if (await bcrypt_1.default.compare(password, dbPassword)) {
         const accessTokenResult = await (0, services_1.generateAccessToken)({ user: username });
         const refreshTokenResult = await (0, services_1.generateRefreshToken)({ user: username });
         if (!accessTokenResult.success) {
-            return (0, utils_1.resSender)(res, next, accessTokenResult.statusCode, false, accessTokenResult.message);
+            (0, utils_1.resSender)(res, next, accessTokenResult.statusCode, false, accessTokenResult.message);
+            return;
         }
         if (!refreshTokenResult.success) {
-            return (0, utils_1.resSender)(res, next, refreshTokenResult.statusCode, false, refreshTokenResult.message);
+            (0, utils_1.resSender)(res, next, refreshTokenResult.statusCode, false, refreshTokenResult.message);
+            return;
         }
-        return (0, utils_1.resSender)(res, next, result.statusCode, true, { accessToken: accessTokenResult.message.data, refreshToken: refreshTokenResult.message.data });
+        (0, utils_1.resSender)(res, next, result.statusCode, true, { accessToken: accessTokenResult.message.data, refreshToken: refreshTokenResult.message.data });
     }
     else {
-        return (0, utils_1.resSender)(res, next, 401, false, "Password Incorrect!");
+        (0, utils_1.resSender)(res, next, 401, false, 'Password Incorrect!');
     }
 };
 exports.loginUser = loginUser;
@@ -47,40 +51,48 @@ const refreshTokenGeneration = async (req, res, next) => {
     const { username, token } = req.body;
     const result = await (0, services_1.findbyToken)(token);
     if (!result.success) {
-        return (0, utils_1.resSender)(res, next, result.statusCode, false, "Refresh token Invalid..");
+        (0, utils_1.resSender)(res, next, result.statusCode, false, 'Refresh token Invalid..');
+        return;
     }
     const accessTokenResult = await (0, services_1.generateAccessToken)({ user: username });
     const refreshTokenResult = await (0, services_1.generateRefreshToken)({ user: username });
     if (!accessTokenResult.success) {
-        return (0, utils_1.resSender)(res, next, accessTokenResult.statusCode, false, accessTokenResult.message);
+        (0, utils_1.resSender)(res, next, accessTokenResult.statusCode, false, accessTokenResult.message);
+        return;
     }
     if (!refreshTokenResult.success) {
-        return (0, utils_1.resSender)(res, next, refreshTokenResult.statusCode, false, refreshTokenResult.message);
+        (0, utils_1.resSender)(res, next, refreshTokenResult.statusCode, false, refreshTokenResult.message);
+        return;
     }
-    return (0, utils_1.resSender)(res, next, refreshTokenResult.statusCode, true, { accessToken: accessTokenResult.message.data, refreshToken: refreshTokenResult.message.data });
+    (0, utils_1.resSender)(res, next, refreshTokenResult.statusCode, true, { accessToken: accessTokenResult.message.data, refreshToken: refreshTokenResult.message.data });
 };
 exports.refreshTokenGeneration = refreshTokenGeneration;
 const logoutUser = async (req, res, next) => {
     const { accessToken, refreshToken } = req.body;
     if (accessToken === undefined || refreshToken === undefined) {
-        return (0, utils_1.resSender)(res, next, 400, false, "accessToken and refreshToken both should be present");
+        (0, utils_1.resSender)(res, next, 400, false, 'accessToken and refreshToken both should be present');
+        return;
     }
     const refreshTokenCheck = await (0, services_1.findbyToken)(refreshToken);
     if (!refreshTokenCheck.success) {
-        return (0, utils_1.resSender)(res, next, 400, false, "Invalid refreshToken provided");
+        (0, utils_1.resSender)(res, next, 400, false, 'Invalid refreshToken provided');
+        return;
     }
     const accessTokenCheck = await (0, services_1.findbyToken)(accessToken);
     if (!accessTokenCheck.success) {
-        return (0, utils_1.resSender)(res, next, 400, false, "Invalid accessToken provided");
+        (0, utils_1.resSender)(res, next, 400, false, 'Invalid accessToken provided');
+        return;
     }
     const refreshTokenResult = await (0, services_1.removeToken)(refreshToken);
     if (!refreshTokenResult.success) {
-        return (0, utils_1.resSender)(res, next, refreshTokenResult.statusCode, false, refreshTokenResult.message);
+        (0, utils_1.resSender)(res, next, refreshTokenResult.statusCode, false, refreshTokenResult.message);
+        return;
     }
     const accessTokenResult = await (0, services_1.removeToken)(accessToken);
     if (!accessTokenResult.success) {
-        return (0, utils_1.resSender)(res, next, accessTokenResult.statusCode, false, accessTokenResult.message);
+        (0, utils_1.resSender)(res, next, accessTokenResult.statusCode, false, accessTokenResult.message);
+        return;
     }
-    return (0, utils_1.resSender)(res, next, accessTokenResult.statusCode, true, "Logged out user successfully");
+    (0, utils_1.resSender)(res, next, accessTokenResult.statusCode, true, 'Logged out user successfully');
 };
 exports.logoutUser = logoutUser;

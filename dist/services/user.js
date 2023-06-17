@@ -9,7 +9,7 @@ const saveUser = async (userData) => {
         return {
             statusCode: 201,
             success: true,
-            message: "User added successfully."
+            message: 'User added successfully.'
         };
     }
     catch (error) {
@@ -23,12 +23,12 @@ const saveUser = async (userData) => {
 exports.saveUser = saveUser;
 const findByNameUser = async (username) => {
     try {
-        const foundUser = await models_1.User.findOne({ username: username });
+        const foundUser = await models_1.User.findOne({ username });
         if (foundUser === null) {
             return {
                 statusCode: 404,
                 success: false,
-                message: "could not find User with given username."
+                message: 'could not find User with given username.'
             };
         }
         return {

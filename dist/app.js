@@ -7,7 +7,7 @@ const utils_1 = require("./utils");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const app = (0, utils_1.createServer)();
-const PORT = process.env.PORT ? process.env.PORT : 3000;
+const PORT = (process.env.PORT != null) ? process.env.PORT : 3000;
 app.listen(PORT, () => {
     console.log(`server listening on port ${PORT}..`);
 });

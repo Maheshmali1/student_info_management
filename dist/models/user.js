@@ -31,6 +31,6 @@ const userSchema = new mongoose_1.Schema({
     droneIds: {
         type: [String],
         default: []
-    },
+    }
 });
 exports.User = mongoose_1.default.model('user', userSchema);
