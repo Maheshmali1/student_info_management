@@ -7,7 +7,7 @@
     "test": "cross-env NODE_ENV=test jest",
     "build": "tsc",
     "dev": "npm run build && cross-env NODE_ENV=development nodemon dist/app.js",
-    "prod": "npm run build && cross-env NODE_ENV=production node dist/app.js",
+    "start": "npm run build && cross-env NODE_ENV=production node dist/app.js",
     "linterCheck": "npm run build && cross-env NODE_ENV=production eslint src",
     "linterFix": "npm run build && cross-env NODE_ENV=production eslint src --fix"
   },
