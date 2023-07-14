@@ -4,6 +4,8 @@ import yaml from 'yamljs';
 import { studentRouter, userRouter } from '../routes';
 import { DBconnection, resSender } from '.';
 import { validateToken } from '../middleware';
+import cors = require("cors");
+
 
 const swaggerDocs = yaml.load('./api.yaml');
 
@@ -13,6 +15,7 @@ export const createServer = () => {
 
   DBconnection();
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+  app.use(cors<Request>());
   app.use(express.json());
 
   app.use('/user', userRouter);
@@ -20,6 +23,6 @@ export const createServer = () => {
   app.use((err: Error, req: Request, res: Response, next: NextFunction): any => {
     return resSender(res, next, 500, false, err.message);
   });
-
+  
   return app;
 };

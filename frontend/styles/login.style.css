@@ -1,0 +1,41 @@
+body {
+    background-image: url('../assets/images/login_back.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.panel-info {
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.card {
+	background-color: #e2e048; 
+	border-radius: 15px;
+    border-color: black;
+    padding: 0.9%;
+    margin: 4%;
+  }
+  
+  .card-title {
+	font-family: "Roboto", sans-serif;
+	font-size: 32px;
+	font-weight: bold;
+	color: #333333;
+  }
+  
+  .card-text {
+	font-family: "Roboto", sans-serif;
+	font-size: 18px;
+	color: #666666;
+  }
