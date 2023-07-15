@@ -1,3 +1,3 @@
 // config.js
-export const backendUrl = 'http://localhost:3000';
+export const backendUrl = 'https://brick-red-prawn-kilt.cyclic.app/';
     

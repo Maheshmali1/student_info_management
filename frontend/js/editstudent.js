@@ -1,4 +1,4 @@
-const BACKEND_URL = 'http://localhost:3000';
+const BACKEND_URL = 'https://brick-red-prawn-kilt.cyclic.app/';
 class edit{
     constructor(form,fields)
     {
