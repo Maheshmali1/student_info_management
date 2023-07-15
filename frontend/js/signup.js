@@ -1,5 +1,5 @@
 
-
+import { backendUrl } from './config.js';
 class signup{
     constructor(form,fields)
     {
@@ -31,7 +31,7 @@ class signup{
                        username:document.querySelector('#signup-email').value,
                        password:document.querySelector('#signup-pass').value
                     }
-                    fetch('http://localhost:3000/user/register',{
+                    fetch(`${backendUrl}/user/register`,{
                         method: 'POST',
                         body : JSON.stringify(data),
                         headers:{

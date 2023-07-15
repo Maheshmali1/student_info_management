@@ -1,3 +1,4 @@
+// const BACKEND_URL = 'http://localhost:3000';
 class addStudent{
     constructor(form,fields)
     {
@@ -31,7 +32,7 @@ class addStudent{
                     const localstorage_user = JSON.parse(localStorage.getItem('user'))
 					const inMemoryToken = localstorage_user.accessToken
                     var response_code;
-                    fetch('http://localhost:3000/student',{
+                    fetch(`${BACKEND_URL}/student`,{
                         method: 'post',
                         headers: {
                             'accept': 'application/json',
@@ -70,7 +71,7 @@ class addStudent{
     
 }
 
-function studentadd(){
+function studentAdd(){
     const form = document.querySelector(".addnewstudent");
     if(form)
     {
@@ -81,4 +82,3 @@ function studentadd(){
     }
 
 }
-

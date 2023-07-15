@@ -1,3 +1,4 @@
+import { backendUrl } from './config.js';
 class Login {
     constructor(form, fields) {
         this.form = form;
@@ -25,7 +26,7 @@ class Login {
                 email = email.trim();
                 console.log(email, password);
 
-                fetch('http://localhost:3000/user/login', {
+                fetch(`${backendUrl}/user/login`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

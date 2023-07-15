@@ -1,3 +1,4 @@
+// const BACKEND_URL = 'http://localhost:3000';
 $(document).ready(function(){
     var t = $('#table');
     var tableOptions = {
@@ -26,7 +27,7 @@ $(document).ready(function(){
             var phone = $('#editStudentModal #phone').val();
     
             var id = studentId; // Replace with the actual student ID
-            var url = `http://localhost:3000/student/${id}`;
+            var url = `${BACKEND_URL}/student/${id}`;
             console.log(url)
             // Prepare the request body
             var body = {
@@ -77,7 +78,7 @@ $(document).ready(function(){
             console.log('You have just clicked on deletion');
            
             var id = studentId; // Replace with the actual student ID
-            var url = `http://localhost:3000/student/${id}`;
+            var url = `${BACKEND_URL}/student/${id}`;
             console.log(url)
           
            

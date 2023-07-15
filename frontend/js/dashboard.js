@@ -1,3 +1,4 @@
+const BACKEND_URL = 'http://localhost:3000';
 $(document).ready(function() {
     // Activate tooltip
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
@@ -40,7 +41,7 @@ $(document).ready(function() {
           
 			const localstorage_user = JSON.parse(localStorage.getItem('user'))
             const inMemoryToken = localstorage_user.accessToken
-            fetch('http://localhost:3000/student/' + studentId, {
+            fetch(`${BACKEND_URL}/student/` + studentId, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ function getAllClients() {
 	myHeaders.append('Content-Type', 'application/json');
 	myHeaders.append('Authorization', `Bearer ${inMemoryToken}`);
 
-		return fetch('http://localhost:3000/student', {
+		return fetch(`${BACKEND_URL}/student`, {
 		method: 'GET',
 		
 		headers: myHeaders,
@@ -142,7 +143,7 @@ function logout(){
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken1 = localstorage_user.accessToken
     const inMemoryToken2 = localstorage_user.refreshToken
-    return fetch('http://localhost:3000/user/logout', {
+    return fetch(`${BACKEND_URL}/user/logout`, {
 		method: 'DELETE',
 		body: JSON.stringify({
             "accessToken": inMemoryToken1,
